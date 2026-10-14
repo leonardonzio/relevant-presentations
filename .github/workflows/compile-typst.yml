@@ -1,34 +1,29 @@
-name: compile Typst Documents
+name: Build Typst document
+on: [push, workflow_dispatch]
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - "**/*.typ"
-      - ".github/workflows/compile-typst.yml"
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
+      - name: Checkout
         uses: actions/checkout@v7
-      - name: set up Typst
+        with:
+          fetch-depth: 0
+
+      - name: Set up Typst
         uses: typst-community/setup-typst@v5
 
-      - name: compile all typst files in subfolders
+      - name: Compile all Typst files in their folders
         run: |
-          shopt -s nullglob
           for file in */*.typ; do
-            echo "Compiling $file..."
-            typst compile "$file"
+            typst compile --creation-timestamp "$(git log -1 --format=%ct "$file")" "$file"
           done
 
-      - name: Upload compiled PDFs
-        uses: actions/upload-artifact@v7
+      - name: Save PDFs into the same folders
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          name: compiled-pdfs
-          path: "*/*.pdf"
-
-
+          commit_message: "chore: compile Typst PDFs [skip ci]"
+          file_pattern: "*/*.pdf"
