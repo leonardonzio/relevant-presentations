@@ -1,0 +1,35 @@
+name: compile Typst Documents
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.typ"
+      - ".github/workflows/compile-typst.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: set up Typst
+        uses: typst-community/setup-typst@v4
+
+      - name: compile all typst files in subfolders
+        run: |
+          shopt -s nullglob
+          for file in */*.typ; do
+            echo "Compiling $file..."
+            typst compile "$file"
+          done
+
+      - name: Upload compiled PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-pdfs
+          path: "*/*.pdf"
+
+
