@@ -417,7 +417,7 @@ WireGuard central idea
   #box(align(left)[
     - #link("leonardobarone.com")
     - #link("github.com/leonardonzio")
-    - leonardo.barone3\@studio.unibo.it
+    - _leonardo.barone3\@studio.unibo.it_
   ])
 ]
 
