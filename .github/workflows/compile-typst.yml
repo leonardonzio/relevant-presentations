@@ -13,10 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v7
       - name: set up Typst
-        uses: typst-community/setup-typst@v4
+        uses: typst-community/setup-typst@v5
 
       - name: compile all typst files in subfolders
         run: |
@@ -27,7 +26,7 @@ jobs:
           done
 
       - name: Upload compiled PDFs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: compiled-pdfs
           path: "*/*.pdf"
